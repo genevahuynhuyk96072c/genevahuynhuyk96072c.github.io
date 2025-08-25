@@ -3,48 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenCut của bạn</title>
+    <title>Chuyển hướng đến OpenCut</title>
     <!-- Tải Tailwind CSS để tạo kiểu dáng hiện đại -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Đảm bảo toàn bộ trang web chiếm hết chiều cao màn hình và không có lề mặc định */
         body, html {
             height: 100%;
             margin: 0;
-            overflow: hidden; /* Ngăn cuộn trang chính */
             font-family: 'Inter', sans-serif;
         }
     </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center p-4">
+<body class="bg-gray-100 flex flex-col items-center justify-center p-4 min-h-screen">
 
-    <!-- Container cho tiêu đề và iframe -->
-    <div class="w-full max-w-7xl mx-auto h-full flex flex-col items-center">
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6 text-center">
-            OpenCut đã được host của bạn
+    <!-- Container chính -->
+    <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">
+            Đang chuyển hướng...
         </h1>
-        
-        <!--
-        Sử dụng thẻ iframe để nhúng ứng dụng OpenCut.
-        Đây là cách đơn giản nhất để hiển thị một trang web bên trong một trang web khác.
-        -->
-        <div class="bg-white rounded-xl shadow-lg w-full flex-grow p-2 overflow-hidden">
-            <iframe 
-                id="opencut-frame"
-                src="https://lcttx-172-212-163-226.a.free.pinggy.link/"
-                title="Ứng dụng OpenCut được host"
-                class="w-full h-full border-0 rounded-lg"
-                loading="lazy">
-                
-                <!-- Văn bản dự phòng cho các trình duyệt không hỗ trợ iframe -->
-                <p class="p-4 text-center text-gray-500">
-                    Trình duyệt của bạn không hỗ trợ iframe. Vui lòng truy cập đường liên kết trực tiếp:
-                    <a href="https://lcttx-172-212-163-226.a.free.pinggy.link/" class="text-blue-500 hover:underline">
-                        https://lcttx-172-212-163-226.a.free.pinggy.link/
-                    </a>
-                </p>
-            </iframe>
+        <p class="text-gray-600 mb-6">
+            Bạn sẽ được chuyển đến ứng dụng OpenCut của mình trong giây lát.
+        </p>
+
+        <!-- Thêm một vòng quay loading để hiển thị trực quan -->
+        <div class="flex justify-center mb-6">
+            <svg class="animate-spin -ml-1 mr-3 h-12 w-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
         </div>
+
+        <!--
+        Sử dụng JavaScript để tự động chuyển hướng người dùng.
+        window.location.href sẽ thay đổi URL của trình duyệt hiện tại.
+        -->
+        <script>
+            // URL của ứng dụng OpenCut đã được host
+            const hostedUrl = "https://lcttx-172-212-163-226.a.free.pinggy.link/";
+            
+            // Tự động chuyển hướng sau 3 giây (3000ms)
+            setTimeout(() => {
+                window.location.href = hostedUrl;
+            }, 3000);
+        </script>
+        
+        <p class="text-sm text-gray-400">
+            Nếu bạn không được chuyển hướng, vui lòng bấm vào liên kết sau:
+            <br>
+            <a href="https://lcttx-172-212-163-226.a.free.pinggy.link/" class="text-blue-500 hover:underline font-medium mt-2 block">
+                https://lcttx-172-212-163-226.a.free.pinggy.link/
+            </a>
+        </p>
     </div>
 
 </body>
