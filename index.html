@@ -3,460 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Web Hiện Đại | Đăng Nhập & Admin Panel</title>
-    
-    <!-- Tailwind CSS -->
+    <title>OpenCut của bạn</title>
+    <!-- Tải Tailwind CSS để tạo kiểu dáng hiện đại -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide-react@0.292.0/dist/lucide-react.js"></script>
-    <script src="https://unpkg.com/lucide-icons@0.378.0"></script>
-
     <style>
-        /* Sử dụng font Inter làm font chữ mặc định */
-        body {
+        /* Đảm bảo toàn bộ trang web chiếm hết chiều cao màn hình và không có lề mặc định */
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Ngăn cuộn trang chính */
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        /* Ẩn các view mặc định */
-        .view {
-            display: none;
-        }
-        /* Style cho spinner loading */
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: #4f46e5;
-            animation: spin 1s ease infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-gray-100 flex flex-col items-center justify-center p-4">
 
-    <!-- Main Application Container -->
-    <div id="app" class="min-h-screen flex flex-col">
-
-        <!-- Header/Navigation Bar -->
-        <header class="bg-white/80 backdrop-blur-lg border-b border-slate-200 sticky top-0 z-50">
-            <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="shield-check" class="text-indigo-600"></i>
-                        <span class="font-bold text-xl text-slate-900">AuthSys</span>
-                    </div>
-                    <div id="nav-links" class="flex items-center space-x-4">
-                        <!-- Các link sẽ được thêm bằng JS -->
-                    </div>
-                </div>
-            </nav>
-        </header>
-
-        <!-- Content Area -->
-        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-            
-            <!-- Loading Screen -->
-            <div id="loading-screen" class="view flex flex-col items-center justify-center text-center h-full pt-20">
-                <div class="spinner mb-4"></div>
-                <p class="text-slate-500">Đang khởi tạo ứng dụng...</p>
-            </div>
-
-            <!-- Login View -->
-            <div id="login-view" class="view max-w-md mx-auto">
-                <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
-                    <h2 class="text-2xl font-bold text-center text-slate-900 mb-1">Đăng Nhập</h2>
-                    <p class="text-center text-slate-500 mb-6">Chào mừng trở lại!</p>
-                    <form id="login-form">
-                        <div class="mb-4">
-                            <label for="login-email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                            <input type="email" id="login-email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                        </div>
-                        <div class="mb-6">
-                            <label for="login-password" class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu</label>
-                            <input type="password" id="login-password" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                        </div>
-                        <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300">Đăng Nhập</button>
-                    </form>
-                    <p class="text-center text-sm text-slate-500 mt-6">
-                        Chưa có tài khoản? <a href="#" id="show-register" class="font-medium text-indigo-600 hover:text-indigo-500">Đăng ký ngay</a>
-                    </p>
-                </div>
-            </div>
-
-            <!-- Register View -->
-            <div id="register-view" class="view max-w-md mx-auto">
-                <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
-                    <h2 class="text-2xl font-bold text-center text-slate-900 mb-1">Tạo Tài Khoản</h2>
-                    <p class="text-center text-slate-500 mb-6">Bắt đầu hành trình của bạn với chúng tôi.</p>
-                    <form id="register-form">
-                        <div class="mb-4">
-                            <label for="register-name" class="block text-sm font-medium text-slate-700 mb-1">Họ và Tên</label>
-                            <input type="text" id="register-name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                        </div>
-                        <div class="mb-4">
-                            <label for="register-email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                            <input type="email" id="register-email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                        </div>
-                        <div class="mb-6">
-                            <label for="register-password" class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu</label>
-                            <input type="password" id="register-password" required minlength="6" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                        </div>
-                        <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300">Đăng Ký</button>
-                    </form>
-                    <p class="text-center text-sm text-slate-500 mt-6">
-                        Đã có tài khoản? <a href="#" id="show-login" class="font-medium text-indigo-600 hover:text-indigo-500">Đăng nhập</a>
-                    </p>
-                </div>
-            </div>
-
-            <!-- User Dashboard View -->
-            <div id="dashboard-view" class="view">
-                <h1 class="text-3xl font-bold text-slate-900 mb-2">Chào mừng, <span id="user-name"></span>!</h1>
-                <p class="text-lg text-slate-600 mb-8">Đây là trang tổng quan cá nhân của bạn.</p>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
-                        <i data-lucide="user-circle" class="w-10 h-10 text-indigo-500 mb-3"></i>
-                        <h3 class="font-semibold text-lg">Thông tin tài khoản</h3>
-                        <p class="text-slate-500 text-sm">Xem và chỉnh sửa thông tin cá nhân của bạn.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
-                        <i data-lucide="settings" class="w-10 h-10 text-teal-500 mb-3"></i>
-                        <h3 class="font-semibold text-lg">Cài đặt</h3>
-                        <p class="text-slate-500 text-sm">Quản lý cài đặt thông báo và bảo mật.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
-                        <i data-lucide="help-circle" class="w-10 h-10 text-amber-500 mb-3"></i>
-                        <h3 class="font-semibold text-lg">Hỗ trợ</h3>
-                        <p class="text-slate-500 text-sm">Liên hệ với chúng tôi nếu bạn cần giúp đỡ.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Admin Panel View -->
-            <div id="admin-view" class="view">
-                <div class="flex justify-between items-center mb-8">
-                    <div>
-                        <h1 class="text-3xl font-bold text-slate-900">Admin Panel</h1>
-                        <p class="text-lg text-slate-600">Quản lý hệ thống của bạn tại đây.</p>
-                    </div>
-                    <div class="flex items-center space-x-2 bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                        <i data-lucide="shield" class="w-4 h-4"></i>
-                        <span>Chế độ Quản trị viên</span>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg border border-slate-200">
-                    <div class="p-6 border-b border-slate-200">
-                        <h3 class="text-xl font-semibold">Quản lý người dùng</h3>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-slate-600">Đây là nơi bạn có thể xem danh sách người dùng, chỉnh sửa quyền hoặc xóa tài khoản. Chức năng này sẽ được phát triển thêm.</p>
-                        <p class="text-sm text-slate-500 mt-2">Để phục vụ mục đích demo, tài khoản có email <code class="bg-slate-100 text-slate-800 px-1 py-0.5 rounded">admin@example.com</code> sẽ được cấp quyền admin.</p>
-                        <div class="mt-6">
-                            <table class="w-full text-left">
-                                <thead>
-                                    <tr class="border-b bg-slate-50">
-                                        <th class="p-3 text-sm font-semibold text-slate-600">Tên</th>
-                                        <th class="p-3 text-sm font-semibold text-slate-600">Email</th>
-                                        <th class="p-3 text-sm font-semibold text-slate-600">Vai trò</th>
-                                        <th class="p-3 text-sm font-semibold text-slate-600">Ngày tham gia</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="border-b">
-                                        <td class="p-3">Admin User</td>
-                                        <td class="p-3">admin@example.com</td>
-                                        <td class="p-3"><span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-1 rounded-full">Admin</span></td>
-                                        <td class="p-3">2024-07-26</td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="p-3">Nguyễn Văn A</td>
-                                        <td class="p-3">nguyenvana@email.com</td>
-                                        <td class="p-3"><span class="bg-slate-100 text-slate-800 text-xs font-medium px-2 py-1 rounded-full">User</span></td>
-                                        <td class="p-3">2024-07-25</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-white border-t border-slate-200 mt-auto">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-slate-500 text-sm">
-                &copy; <span id="footer-year"></span> AuthSys. All Rights Reserved.
-            </div>
-        </footer>
-    </div>
-
-    <!-- Notification Modal -->
-    <div id="notification" class="fixed top-5 right-5 bg-white shadow-lg rounded-lg p-4 max-w-sm z-50 transform translate-x-[150%]" style="transition: transform 0.3s ease-in-out;">
-        <div class="flex items-start">
-            <div id="notification-icon" class="flex-shrink-0"></div>
-            <div class="ml-3 w-0 flex-1 pt-0.5">
-                <p id="notification-title" class="text-sm font-medium text-gray-900"></p>
-                <p id="notification-message" class="mt-1 text-sm text-gray-500"></p>
-            </div>
-            <div class="ml-4 flex-shrink-0 flex">
-                <button id="notification-close" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <span class="sr-only">Close</span>
-                    <i data-lucide="x" class="h-5 w-5"></i>
-                </button>
-            </div>
+    <!-- Container cho tiêu đề và iframe -->
+    <div class="w-full max-w-7xl mx-auto h-full flex flex-col items-center">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6 text-center">
+            OpenCut đã được host của bạn
+        </h1>
+        
+        <!--
+        Sử dụng thẻ iframe để nhúng ứng dụng OpenCut.
+        Đây là cách đơn giản nhất để hiển thị một trang web bên trong một trang web khác.
+        -->
+        <div class="bg-white rounded-xl shadow-lg w-full flex-grow p-2 overflow-hidden">
+            <iframe 
+                id="opencut-frame"
+                src="https://lcttx-172-212-163-226.a.free.pinggy.link/"
+                title="Ứng dụng OpenCut được host"
+                class="w-full h-full border-0 rounded-lg"
+                loading="lazy">
+                
+                <!-- Văn bản dự phòng cho các trình duyệt không hỗ trợ iframe -->
+                <p class="p-4 text-center text-gray-500">
+                    Trình duyệt của bạn không hỗ trợ iframe. Vui lòng truy cập đường liên kết trực tiếp:
+                    <a href="https://lcttx-172-212-163-226.a.free.pinggy.link/" class="text-blue-500 hover:underline">
+                        https://lcttx-172-212-163-226.a.free.pinggy.link/
+                    </a>
+                </p>
+            </iframe>
         </div>
     </div>
 
-
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Import các hàm cần thiết từ Firebase SDK
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { 
-            getAuth, 
-            onAuthStateChanged, 
-            createUserWithEmailAndPassword, 
-            signInWithEmailAndPassword, 
-            signOut,
-            signInAnonymously,
-            signInWithCustomToken
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { 
-            getFirestore, 
-            doc, 
-            setDoc, 
-            getDoc 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // --- CONFIG & INITIALIZATION ---
-
-        // Lấy cấu hình Firebase và App ID từ biến toàn cục (được cung cấp bởi môi trường)
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        // Khởi tạo Firebase App
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // --- DOM ELEMENTS ---
-        const views = document.querySelectorAll('.view');
-        const navLinks = document.getElementById('nav-links');
-        const loadingScreen = document.getElementById('loading-screen');
-        
-        const loginForm = document.getElementById('login-form');
-        const registerForm = document.getElementById('register-form');
-        
-        const showRegisterLink = document.getElementById('show-register');
-        const showLoginLink = document.getElementById('show-login');
-
-        const userNameSpan = document.getElementById('user-name');
-        
-        const notification = document.getElementById('notification');
-        const notificationIcon = document.getElementById('notification-icon');
-        const notificationTitle = document.getElementById('notification-title');
-        const notificationMessage = document.getElementById('notification-message');
-        const notificationClose = document.getElementById('notification-close');
-
-        // --- UI LOGIC ---
-
-        // Hàm hiển thị một view cụ thể và ẩn các view khác
-        function showView(viewId) {
-            views.forEach(view => {
-                view.style.display = 'none';
-            });
-            const activeView = document.getElementById(viewId);
-            if (activeView) {
-                activeView.style.display = 'block';
-            }
-        }
-
-        // Hàm hiển thị thông báo
-        function showNotification(type, title, message) {
-            notificationTitle.textContent = title;
-            notificationMessage.textContent = message;
-
-            if (type === 'success') {
-                notificationIcon.innerHTML = `<i data-lucide="check-circle" class="h-6 w-6 text-green-400"></i>`;
-            } else {
-                notificationIcon.innerHTML = `<i data-lucide="x-circle" class="h-6 w-6 text-red-400"></i>`;
-            }
-            lucide.createIcons(); // Render icon mới
-
-            notification.classList.remove('translate-x-[150%]');
-            setTimeout(() => {
-                notification.classList.add('translate-x-[150%]');
-            }, 4000);
-        }
-        
-        notificationClose.addEventListener('click', () => {
-            notification.classList.add('translate-x-[150%]');
-        });
-
-
-        // Cập nhật giao diện thanh điều hướng (navbar)
-        function updateNav(user, userData) {
-            navLinks.innerHTML = ''; // Xóa các link cũ
-            if (user) {
-                let roleBadge = '';
-                if (userData && userData.isAdmin) {
-                    roleBadge = `<span class="ml-2 bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-0.5 rounded-full">Admin</span>`;
-                }
-                navLinks.innerHTML = `
-                    <span class="text-sm text-slate-600">Xin chào, <span class="font-semibold">${userData?.name || user.email}</span>${roleBadge}</span>
-                    <button id="logout-btn" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Đăng xuất</button>
-                `;
-                document.getElementById('logout-btn').addEventListener('click', handleLogout);
-            } else {
-                 navLinks.innerHTML = `
-                    <a href="#" id="nav-login-btn" class="text-sm font-medium text-slate-600 hover:text-slate-900">Đăng nhập</a>
-                    <a href="#" id="nav-register-btn" class="text-sm font-medium bg-indigo-600 text-white px-3 py-2 rounded-lg hover:bg-indigo-700">Đăng ký</a>
-                `;
-                document.getElementById('nav-login-btn').addEventListener('click', () => showView('login-view'));
-                document.getElementById('nav-register-btn').addEventListener('click', () => showView('register-view'));
-            }
-        }
-
-        // --- AUTHENTICATION LOGIC ---
-
-        // Theo dõi trạng thái đăng nhập của người dùng
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                // Người dùng đã đăng nhập
-                const userDocRef = doc(db, "users", user.uid);
-                const userDocSnap = await getDoc(userDocRef);
-
-                if (userDocSnap.exists()) {
-                    const userData = userDocSnap.data();
-                    userNameSpan.textContent = userData.name;
-                    updateNav(user, userData);
-
-                    if (userData.isAdmin) {
-                        showView('admin-view');
-                    } else {
-                        showView('dashboard-view');
-                    }
-                } else {
-                    // Trường hợp hiếm gặp: có auth record nhưng không có user doc
-                    console.error("Không tìm thấy dữ liệu người dùng.");
-                    updateNav(user, null);
-                    showView('dashboard-view'); // Hiển thị dashboard mặc định
-                }
-            } else {
-                // Người dùng đã đăng xuất hoặc chưa đăng nhập
-                updateNav(null, null);
-                showView('login-view');
-            }
-            loadingScreen.style.display = 'none'; // Ẩn màn hình loading sau khi kiểm tra auth xong
-        });
-
-        // Xử lý đăng ký
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                // Lưu thông tin người dùng vào Firestore
-                // Mặc định, người dùng mới không phải là admin
-                // Đặc biệt: nếu email là 'admin@example.com', set isAdmin = true
-                const isAdmin = email.toLowerCase() === 'admin@example.com';
-
-                await setDoc(doc(db, "users", user.uid), {
-                    name: name,
-                    email: email,
-                    isAdmin: isAdmin,
-                    createdAt: new Date()
-                });
-                
-                showNotification('success', 'Thành công!', 'Tài khoản của bạn đã được tạo.');
-                // onAuthStateChanged sẽ tự động xử lý việc chuyển view
-            } catch (error) {
-                console.error("Lỗi đăng ký:", error);
-                showNotification('error', 'Lỗi!', error.message);
-            }
-        });
-
-        // Xử lý đăng nhập
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                showNotification('success', 'Thành công!', 'Đăng nhập thành công.');
-                // onAuthStateChanged sẽ tự động xử lý việc chuyển view
-            } catch (error) {
-                console.error("Lỗi đăng nhập:", error);
-                showNotification('error', 'Lỗi!', 'Email hoặc mật khẩu không chính xác.');
-            }
-        });
-
-        // Xử lý đăng xuất
-        async function handleLogout() {
-            try {
-                await signOut(auth);
-                showNotification('success', 'Thông báo', 'Bạn đã đăng xuất.');
-                // onAuthStateChanged sẽ tự động xử lý việc chuyển view
-            } catch (error) {
-                console.error("Lỗi đăng xuất:", error);
-                showNotification('error', 'Lỗi!', 'Có lỗi xảy ra khi đăng xuất.');
-            }
-        }
-
-        // --- EVENT LISTENERS FOR VIEW SWITCHING ---
-        showRegisterLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView('register-view');
-        });
-
-        showLoginLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView('login-view');
-        });
-        
-        // --- INITIALIZATION ON PAGE LOAD ---
-        window.onload = async () => {
-            // Hiển thị màn hình loading lúc đầu
-            showView('loading-screen');
-            
-            // Xử lý đăng nhập tự động với token nếu có
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    // Nếu không có token, có thể chọn đăng nhập ẩn danh hoặc không làm gì cả
-                    // await signInAnonymously(auth); 
-                }
-            } catch (error) {
-                console.error("Lỗi đăng nhập tự động:", error);
-                // Nếu lỗi, onAuthStateChanged sẽ xử lý và đưa về trang login
-            }
-
-            // Cập nhật năm ở footer
-            document.getElementById('footer-year').textContent = new Date().getFullYear();
-            
-            // Render các icon
-            lucide.createIcons();
-        };
-
-    </script>
 </body>
 </html>
